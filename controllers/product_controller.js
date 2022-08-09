@@ -1,4 +1,5 @@
 // const carparkData = require("../models/carpark_data")
+const carparkModel = require("../models/carparks");
 
 const controller = {
     createCarpark: async (req, res) => {
@@ -45,23 +46,27 @@ const controller = {
     listCarparks: async (req, res) => {
         // //.exec() is a promise - need await
         // const products = await productModel.find().exec();
-        // //or const products = await productModel.find({})
+        const carparks = await carparkModel.find({})
 
-        // console.log(products);
+        console.log(carparks);
 
         // res.render('products/index', {products});
-        res.render('pages/home')
+        res.render('pages/home', { carparks })
     },
 
     getCarpark: async(req, res) => {
-        res.send('get carpark page')
         // const product = await productModel.findById(req.params.product_id)
-        
+        // const product = await productModel.findById(req.params.product_id)
         // //Here ratings - making use of the _id reference
         // //To interact with different models/DB
         // //Ratings for individual product is in another DB
         // //now is listing down all the ratings
         // const ratings = await productRatingModel.find({product_id: req.params.product_id})
+        const carpark = await carparkModel.find({CarParkID: req.params.carpark_id})
+        console.log('show carpark',carpark)
+        res.render('pages/show', { carpark })
+
+        //// res.send('get carpark page')
 
         // //todo: aggregation of ratings
 

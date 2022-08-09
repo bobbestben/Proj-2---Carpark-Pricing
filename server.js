@@ -33,7 +33,7 @@ const userController = require('./controllers/users_controllers')
 const dataController = require('./controllers/data_controller')
 
 // Product Routes - list, show, create, edit, delete
-app.get("/", productController.listCarparks)
+app.get("/", productController.listCarparks) // ok for now
 app.get('/:carpark_id', productController.getCarpark)
 app.get('/carparks/:carpark_id:/edit', productController.showEditCarparkForm)
 app.post('/:carpark_id', productController.editCarpark)

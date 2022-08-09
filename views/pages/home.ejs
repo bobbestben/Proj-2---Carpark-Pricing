@@ -14,6 +14,10 @@
                 <li>CP 1</li>
                 <li>CP 2</li>
                 <li>CP 3</li>
+                <!-- Need to filter this list based on search.value -->
+                <% carparks.forEach( carpark => { %>
+                    <li><%= carpark.Development + '  (CP ' + carpark.CarParkID + ' )' %></li>
+                <% }) %>
             </ul>
         </div>
     </div>
