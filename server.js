@@ -34,11 +34,12 @@ const dataController = require('./controllers/data_controller')
 
 // Product Routes - list, show, create, edit, delete
 app.get("/", productController.listCarparks) // ok for now
-app.get('/:carpark_id', productController.getCarpark)
-app.get('/carparks/:carpark_id:/edit', productController.showEditCarparkForm)
-app.post('/:carpark_id', productController.editCarpark)
-app.post('/products', productController.createCarpark)
-app.delete('/:carpark_id', productController.deleteCarpark)
+app.post("/", productController.listCarparks) // ok for now
+app.get('/:carpark_id/new', productController.showCreateCarparkForm) // ok for now
+app.post('/:carpark_id', productController.updatePricing) // ok for now
+app.get('/:carpark_id', productController.getCarpark) // ok for now - need to add carpark pricing
+app.get('/:carpark_id/edit', productController.showEditCarparkForm) //ok for now
+app.get('/:carpark_id/delete', productController.deleteCarpark)
 
 // Users Routes - show, login, logout, create
 app.get('/users/:user_id', userController.showUser)

@@ -6,7 +6,6 @@
 // How to import data for script file in html?
 //or how to pass database file to main.js file?
 
-
 const carparkData = {
 
     "odata.metadata":

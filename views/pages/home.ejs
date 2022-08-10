@@ -3,12 +3,20 @@
 <div id="page-home">
     <div id="homepage-cover">
         <div class="container">
-            <h1>My Map supposed to<br />be here</h1>
+            <h1>My Map</h1>
             <div id="map"></div>
             <p><%=  %></p>
-            <button type="button" class="btn btn-light">
-                Search for Carpark here
-            </button>
+            <form id="search-form" class="mt-5" method="POST" action="/">
+                <label for="pricing" class="form-label">Search Form</label>
+    
+                <div class="mb-3">
+                    <input type="text" class="btn btn-light" id="search" rows="3" name="search" placeholder="Search for Carpark here..."></input>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-light">Search</button>
+                </div>
+
+            </form>
             <ul>
                 <li>Render list from DB here</li>
                 <li>CP 1</li>
@@ -16,11 +24,43 @@
                 <li>CP 3</li>
                 <!-- Need to filter this list based on search.value -->
                 <% carparks.forEach( carpark => { %>
-                    <li><%= carpark.Development + '  (CP ' + carpark.CarParkID + ' )' %></li>
+                    <li><a class="nav-link" href="/<%= carpark.CarParkID %>"><%= carpark.Development + '  (CP ' + carpark.CarParkID + ' )' %></a></li>
                 <% }) %>
             </ul>
         </div>
     </div>
 </div>
 
-<!-- <%- include('../partials/footer'); %> -->
+</main>
+
+<footer id="page-footer">
+    <div class="container">
+        <p>All rights reserved</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+<!-- Leaflet JS File -->
+<script
+    src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""
+></script>
+
+<!-- Require Script File -->
+<!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> -->
+
+<script src="/main.js"></script>
+
+<script>
+//     var map = L.map('map').setView([51.505, -0.09], 13);
+//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     maxZoom: 19,
+//     attribution: '© OpenStreetMap'
+// }).addTo(map);
+</script>
+
+</body>
+
+</html>

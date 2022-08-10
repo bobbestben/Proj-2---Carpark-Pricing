@@ -58,22 +58,38 @@
                                 >Home</a
                             >
                         </li>
+                        <% if ("1"===1) { %>
                         <li class="nav-item">
                             <a
                                 class="nav-link"
                                 aria-current="page"
-                                href="/about"
-                                >About</a
+                                href="/users/profile"
+                                >Profile</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST" action="/users/logout">
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+                        <% } else { %>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                aria-current="page"
+                                href="/users/register"
+                                >Register</a
                             >
                         </li>
                         <li class="nav-item">
                             <a
                                 class="nav-link"
                                 aria-current="page"
-                                href="/contact"
-                                >Contact</a
+                                href="/users/login"
+                                >Login</a
                             >
                         </li>
+                        <% } %>
                     </ul>
                 </div>
             </div>

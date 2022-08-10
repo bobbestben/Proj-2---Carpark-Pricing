@@ -1,0 +1,55 @@
+<%- include('../partials/header'); %>
+
+<div class="constrained-full-height">
+
+    <div id="page-register">
+
+        <div class="container">
+
+            <div class="row gx-5">
+
+                <div class="col">
+                    <div class="bg-section constrained-full-height"></div>
+                </div>
+
+                <div class="col">
+                    
+                    <div class="content-section">
+                        <div class="text-center mt-5">
+                            <h1 class="mb-3">Create Carpark</h1>
+                            <div class="hr"></div>
+                        </div>
+
+                        <form id="registration-form" class="mt-5" method="POST" action="/<%= carpark.CarParkID %>">
+
+                            <ul class="error-msgs"></ul>
+
+                            <div class="mb-3">
+
+                            <h3><%= carpark.Development + '  (CP ' + carpark.CarParkID + ' )' %></h3>
+
+                            <div class="mb-3">
+                                <label for="pricing" class="form-label">Pricing</label>
+                                <input type="text" class="form-control" id="pricing" rows="3" name="pricing"></input>
+                            </div>
+
+                            <div class="success-msg"></div>
+                
+                            <div class="mb-3 text-center">
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<%- include('../partials/footer'); %>

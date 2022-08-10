@@ -4,18 +4,28 @@
     <div id="homepage-cover">
         <div class="container">
             <h1>My Carpark Info<br />is here</h1>
-            <h1><%= carpark.Development + '  (CP ' + carpark.CarParkID + ' )' %></h1>
-            <p><%= carpark['Development'] %></p>
-            <p>Carpark Prices $0.60 / 30min</p>
+            <% if (carpark) { %>
+            <h3>
+                <%= carpark.Development + ' (CP ' + carpark.CarParkID + ' )' %>
+            </h3>
             <p><%= 'Available Lots: ' + carpark.AvailableLots %></p>
-            <button type="button" class="btn btn-light">
-                Upvote
-            </button>
-            <button type="button" class="btn btn-dark">
-                Downvote
-            </button>
+            <% } %>
+            <h5>Pricing:</h5>
+            <% if (pricing) { %>
+            <p><%= pricing.pricing %></p>
+            <a href="/<%= carpark.CarParkID %>/edit" class="btn btn-primary">Edit Price Info</a>
+            <% } else { %>
+            <p>
+                No pricing Available. Click the button below if you'd like to
+                contribute!
+            </p>
+            <a href="/<%= carpark.CarParkID %>/new" class="btn btn-primary">Add Price Info</a>
+            <% } %>
+            <button type="button" class="btn btn-secondary">Upvote</button>
+            <button type="button" class="btn btn-secondary">Downvote</button>
+            <a href="/<%= carpark.CarParkID %>/delete" class="btn btn-danger">Delete</a>
         </div>
     </div>
 </div>
 
-<!-- <%- include('../partials/footer'); %> -->
+<%- include('../partials/footer'); %>
