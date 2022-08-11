@@ -17,7 +17,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //Connection to DB
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@generalassembly.imxw3.mongodb.net/?retryWrites=true&w=majority`;
