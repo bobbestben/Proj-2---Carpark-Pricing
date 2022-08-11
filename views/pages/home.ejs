@@ -3,9 +3,8 @@
 <div id="page-home">
     <div id="homepage-cover">
         <div class="container">
-            <h1>My Map</h1>
-            <div id="map"></div>
-            <p><%=  %></p>
+            <div class="mt-3" id="map"></div>
+            <input type="text" id="search-input" placeholder="input.value here"/>
             <form id="search-form" class="mt-5" method="POST" action="/">
                 <label for="pricing" class="form-label">Search Form</label>
     
@@ -17,15 +16,8 @@
                 </div>
 
             </form>
-            <ul>
-                <li>Render list from DB here</li>
-                <li>CP 1</li>
-                <li>CP 2</li>
-                <li>CP 3</li>
+            <ul id="carpark-list">
                 <!-- Need to filter this list based on search.value -->
-                <% carparks.forEach( carpark => { %>
-                    <li><a class="nav-link" href="/<%= carpark.CarParkID %>"><%= carpark.Development + '  (CP ' + carpark.CarParkID + ' )' %></a></li>
-                <% }) %>
             </ul>
         </div>
     </div>
@@ -51,14 +43,102 @@
 <!-- Require Script File -->
 <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> -->
 
-<script src="/main.js"></script>
+<!-- <script src="/main.js"></script> -->
 
 <script>
-//     var map = L.map('map').setView([51.505, -0.09], 13);
-//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     maxZoom: 19,
-//     attribution: '© OpenStreetMap'
-// }).addTo(map);
+    // Getting data from database for DOM manipulation
+    //give an attribute data-carpark-id
+    //onclick use JS - look for carpark-id
+    //with carparkMapping
+    //filter
+    // console.log('carpark data here', `<%- carparkMap[0]._id %>`)
+    let carparkMapping = `<%- carparkMap %>` //conversion gets messy when passing object here 
+    carparkMapping = JSON.parse(carparkMapping)
+    console.log(carparkMapping.length)
+
+    // Getting my DOM elements
+    let filteredList = null
+    const search = document.querySelector('#search-input')
+    const carparkSection = document.querySelector('#carpark-list')
+
+    // Show Full Carpark List Initially
+    carparkMapping.forEach( carpark => {
+        const carparkA = document.createElement('a')
+        carparkA.setAttribute('class','nav-link')
+        carparkA.setAttribute('href', `/${carpark.CarParkID}`)
+        carparkA.innerText = carpark.Development + '  (CP ' + carpark.CarParkID + ' )'
+        const carparkLi = document.createElement('li')
+        carparkLi.append(carparkA)
+        carparkSection.append(carparkLi)
+        console.log('fullList ran')
+
+    })
+
+    // Show Filtered List onChange to Search input.value
+    search.onchange = () => {
+        console.log(search.value)
+        filteredList = carparkMapping.filter( carpark => {
+            return carpark.Development.toLowerCase().includes(search.value.toLowerCase())
+        })
+        console.log('filteredList', filteredList)
+        carparkSection.innerHTML = "";
+        filteredList.forEach( carpark => {
+            const carparkA = document.createElement('a')
+            carparkA.setAttribute('class','nav-link')
+            carparkA.setAttribute('href', `/${carpark.CarParkID}`)
+            carparkA.innerText = carpark.Development + '  (CP ' + carpark.CarParkID + ' )'
+            const carparkLi = document.createElement('li')
+            carparkLi.append(carparkA)
+            carparkSection.append(carparkLi)
+            console.log('filteredList ran')
+        })
+
+
+    }
+
+    // Setting up Map & Getting Current Location
+    let currentX = 1.29375;
+    let currentY = 103.85718;
+    var map;
+
+    const createMap = () => {
+        // Create map
+        // map = L.map("map").setView([currentX, currentY], 15);
+        map = L.map("map", { doubleClickZoom: false }).locate({
+            setView: true,
+            // maxZoom: 19,
+        });
+        map = map.setZoom(19);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            minZoom: 11,
+            attribution: "© OpenStreetMap",
+        }).addTo(map);
+
+        //Obtain Carpark Coordinates(string), convert to array of numbers, then add marker
+        // const carparkInfo = carparkData.value.map((carpark) => {
+        const carparkInfo = carparkMapping.map((carpark) => {
+            [x, y] = carpark.Location.split(" ");
+            const carparkID = carpark.CarParkID;
+            const carparkName = carpark.Development;
+            const data = [x, y, carparkID, carparkName];
+            return data;
+        });
+
+        carparkInfo.forEach( (carpark) => {
+            const marker = L.marker([carpark[0], carpark[1]], {
+                myUrl: `http://localhost:3000/${carpark[2]}`
+            })
+            .addTo(map)
+            .bindTooltip("<a>" + `<b>CP ${carpark[2]}</b><br>${carpark[3]}<br>` + "</a>", { direction: "top" })
+            .on('click', function(evt) {
+                window.open(evt.target.options.myUrl, '_self');
+            });
+        })
+    };
+
+    createMap();
+
 </script>
 
 </body>

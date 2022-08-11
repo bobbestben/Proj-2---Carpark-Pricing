@@ -4,12 +4,21 @@ const pricingModel = require("../models/pricing");
 
 const controller = {
     listCarparks: async (req, res) => {
-        // //.exec() is a promise - need await
-        // const products = await productModel.find().exec();
+        console.log('listCarparks')
         let carparks = await carparkModel.find({});
+        let carparkMap = [ ]
+        carparks.forEach( carpark => {
+            let c = carpark.toObject()
+            carparkMap.push({
+                ...c,
+                _id: carpark._id.toString()
+            })
+        })
+        carparkMap = JSON.stringify(carparkMap)
+        console.log('carparkMap',carparkMap[0])
 
         // console.log("carparks", carparks);
-        console.log('search-value',req.body.search)
+        // console.log('search-value',req.body.search)
         const searchValue = req.body.search
 
         if (searchValue) {
@@ -20,22 +29,17 @@ const controller = {
             console.log('filteredList',carparks)
         }
 
-        // res.render('products/index', {products});
-        res.render("pages/home", { carparks });
+        // // res.render('products/index', {products});
+        res.render("pages/home", { carparks, carparkMap });
+        // res.send('list carpark')
     },
 
     getCarpark: async (req, res) => {
-        // const product = await productModel.findById(req.params.product_id)
-        // const product = await productModel.findById(req.params.product_id)
-        // //Here ratings - making use of the _id reference
-        // //To interact with different models/DB
-        // //Ratings for individual product is in another DB
-        // //now is listing down all the ratings
-        // const ratings = await productRatingModel.find({product_id: req.params.product_id})
+
         const carpark = await carparkModel.findOne({
             CarParkID: req.params.carpark_id,
         });
-        // console.log("show carpark", carpark);
+        console.log("show carpark", carpark);
 
         const pricing = await pricingModel.findOne({
             carpark_id: req.params.carpark_id,
@@ -43,6 +47,8 @@ const controller = {
         console.log("show pricing", pricing);
 
         res.render("pages/show", { carpark, pricing });
+        console.log('getcarpark')
+        // res.send('getting carpark')
     },
 
     showEditCarparkForm: async (req, res) => {

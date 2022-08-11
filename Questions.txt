@@ -1,0 +1,17 @@
+Passing data from database to ejs to script file:
+import doesnt work for ejs
+from controller -> findOne in DB -> pass as props/object to ejs file -> script file reference the object
+-> can read, but error when it prints the data "&" text got problem
+
+
+
+
+onclick function to buttons?
+previously use dom manipulation, now how? espc with database 
+
+render conditional list
+- how to get input.value from searchbar?
+- currently im using a form with POST to obtain data but not user friendly
+
+Bug troubleshooting
+-not sure why my findOne executes two times

@@ -22,26 +22,24 @@ const port = process.env.PORT || 3000;
 //Connection to DB
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@generalassembly.imxw3.mongodb.net/?retryWrites=true&w=majority`;
 
-//Set view engine
-app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-//use sessions - to create a login session, need a secret
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    // secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    //check what this does, i think only can access cookie if on that page
-    //maxAge - how long before your session expire (not logged in anymore)
-    cookie: { secure: false, httpOnly: false, maxAge: 20000 } //20 seconds
-    // cookie: { secure: true }
-}))
-
 //Apply middlewares
 const productController = require('./controllers/product_controller')
 const userController = require('./controllers/users_controllers')
 const dataController = require('./controllers/data_controller')
+const autMiddleware = require('./middlewares/auth_middleware');
+const { isAuthenticated } = require("./middlewares/auth_middleware");
+
+//Using Middlewares, set view engine
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: false, maxAge: 20000 } //20 seconds
+}))
+app.use(autMiddleware.setAuthUserVar)
 
 // Product Routes - list, show, create, edit, delete
 app.get("/", productController.listCarparks) // ok for now
@@ -50,7 +48,7 @@ app.get('/:carpark_id/new', productController.showCreateCarparkForm) // ok for n
 app.post('/:carpark_id', productController.updatePricing) // ok for now
 app.get('/:carpark_id', productController.getCarpark) // ok for now
 app.get('/:carpark_id/edit', productController.showEditCarparkForm) //ok for now
-app.get('/:carpark_id/delete', productController.deleteCarpark) // ok for now
+app.get('/:carpark_id/delete', autMiddleware.isAuthenticated, productController.deleteCarpark) // ok for now
 
 // Users Routes - show, login, logout, create
 app.get('/users/register', userController.showRegistrationForm)
