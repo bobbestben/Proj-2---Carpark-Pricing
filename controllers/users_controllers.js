@@ -1,11 +1,10 @@
-// const userValidators = require("../validators/users");
-// const bcrypt = require("bcrypt");
-// const userModel = require("../../models/users/users");
+const userValidators = require("../validators/users");
+const bcrypt = require("bcrypt");
+const userModel = require("../models/users");
 
 const controller = {
-
     showUser: (req, res) => {
-        res.render('users/profile')
+        res.render("users/profile");
     },
 
     showRegistrationForm: (req, res) => {
@@ -57,16 +56,23 @@ const controller = {
     },
 
     login: async (req, res) => {
-        // validation here ...
+        // todo: validation of req.body
         const validatedResults = req.body;
 
         let user = null;
 
-        // get user wwith email from DB
+        // check if username is in DB
         try {
-            user = await userModel.findOne({ email: validatedResults.email });
+            user = await userModel.findOne({ name: validatedResults.name });
         } catch (err) {
+            // not sure why not catching if no user found
             res.send("failed to get user");
+            return;
+        }
+
+        console.log("user line 78", user);
+        if (user == null) {
+            res.send("username not found");
             return;
         }
 
@@ -75,34 +81,24 @@ const controller = {
             validatedResults.password,
             user.hash
         );
+
         //if above dont have await, will always be login successful
         if (!pwMatches) {
             res.send("incorrect password");
             return;
         }
 
-        //log the user in by creating a session
-        //all request that come in will generate a cookie
-        //prevent hacker from getting the cookie and "access" your session
+        // log the user in by creating a session
         req.session.regenerate(function (err) {
             if (err) {
                 res.send("unable to regenerate session");
                 return;
             }
 
-            //This is a callback function to regnerate above
             //store user information in session, typically a user id
-            //sessions automatically encrypt this sessionID for us
-            //can be req.session.<anyVariableName>
-            req.session.user = user.email;
-            //this output is a gibberish string eg. s%3A6v-CYnVjTDJG8Spi_pDOaKRjs7YO06Au.tyfse8KKgkLV006thx%2BQTc9ILweVl3jpoyruIkXZ36I
-            //frontend saves this as cookie value
-            //subsequent req. to backend -> included cookie value in request
-            //then use session_secret to decrypt the string to become user's email
-            //after decrypt, check if exist in DB, then successful authentication
+            req.session.user = user.name;
 
-            //save the session before redirection to ensure page
-            //load does not happen before session is saved
+            //save the session before redirection to ensure page load does not happen before session is saved
             req.session.save(function (err) {
                 if (err) {
                     res.send("unable to save session");
@@ -111,45 +107,28 @@ const controller = {
 
                 res.redirect("/users/profile");
             });
+
+            
+
         });
 
         // res.send('login is successful')
     },
 
-    showDashboard: (req, res) => {
-        //verify that the session user exist, then render the page
-        //this is only checking if user key exist
-        //checking if decrpyt correctly or if session expired automatically done by sessions library
-        //below authentication is repeatedly done, can be set as middleware, refer to server.js route
-        // if (!req.session.user) {
-        //     res.send('you are not authenticated')
-        //     return
-        // }
-
-        res.send("welcome to your protected dashboard");
-    },
-
     showProfile: async (req, res) => {
         console.log(req.session);
-        //verify that the session user exists
-        // if (!req.session.user) {
-        //     res.send('you are not authenticated')
-        //     return
-        // }
 
         //get user data from db using session user
         let user = null;
 
         try {
-            user = await userModel.findOne({ email: req.session.user });
+            user = await userModel.findOne({ name: req.session.user });
         } catch (err) {
             console.log(err);
             res.redirect("/users/login");
             return;
         }
 
-        // res.send('my profile')
-        //normally want to use UU id - why again?
         res.render("users/profile", { user });
     },
 
@@ -160,27 +139,26 @@ const controller = {
 
         //recommended way to logout as per express-sessions doucmentation
         //invalidate the current session
-        req.session.user = null
+        req.session.user = null;
 
         //save the changes
         req.session.save(function (err) {
             if (err) {
-                res.redirect('/login')
-                return
+                res.redirect("/login");
+                return;
             }
 
             //regenerate the session, which is good practice to help
             //guard against forms of session fixation
             req.session.regenerate(function (err) {
                 if (err) {
-                    res.redirect('/login')
-                    return
+                    res.redirect("/login");
+                    return;
                 }
-                res.redirect('/')
-            })
-
-        })
-    }
+                res.redirect("/");
+            });
+        });
+    },
 };
 
 module.exports = controller;
