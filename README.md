@@ -46,21 +46,13 @@ Filters by search
 Standard authentication stuff. Learnt how to render content conditionally.
 Next time can consider have different access levels for certain functions/buttons
 
-### Future Improvements
+### Future Works
 
-1. Bus Stop timings - Make it live feed, like the otter in TraceTogether, so user don't need to click refresh
+1. Bus Stop Ratings/Reliablity
 
-    ![Image](./img/live-data.PNG)
+2. Pricing Details onclick on Home Page
 
-
-2. Search Page - I want to put a real time map of
-   - User Location
-   - Bus Stop locations
-   - Interactive map - provides info when icons are clicked
-  
-    ![Image](./img/search-map-design.PNG)
-
-3. Favourites page - explore local cache/storing/saving of favourite bus stops
+3. CSS stuff
 
 
 
