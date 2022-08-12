@@ -34,12 +34,11 @@ body {
 	background: none;
 	color: gray;
 	border: none;
-	padding-left: 5px;
+	padding: 0 5px;
 	font: inherit;
     font-size: 17px;
 	cursor: pointer;
 	outline: inherit;
-    height: 25.5px;
 }
 
 /* Home page CSS */
