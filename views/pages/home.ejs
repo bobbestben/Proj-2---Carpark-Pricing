@@ -4,20 +4,11 @@
     <div id="homepage-cover">
         <div class="container">
             <div class="mt-3" id="map"></div>
-            <input type="text" id="search-input" placeholder="input.value here"/>
-            <form id="search-form" class="mt-5" method="POST" action="/">
-                <label for="pricing" class="form-label">Search Form</label>
-    
-                <div class="mb-3">
-                    <input type="text" class="btn btn-light" id="search" rows="3" name="search" placeholder="Search for Carpark here..."></input>
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-light">Search</button>
-                </div>
-
-            </form>
-            <ul id="carpark-list">
-                <!-- Need to filter this list based on search.value -->
+            <input type="text" class="icon btn btn-light my-2" id="search-input" placeholder="Search Carpark or Carpark Code"/>
+            <div class="carpark-list-header-near">NEAREST CAR PARKS</div>
+            <div class="carpark-list-header-all">All CAR PARKS</div>
+            <ul class="overflow-auto" id="carpark-list">
+                <!-- <li> from script below will be appended here -->
             </ul>
         </div>
     </div>
@@ -40,19 +31,9 @@
     crossorigin=""
 ></script>
 
-<!-- Require Script File -->
-<!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script> -->
-
-<!-- <script src="/main.js"></script> -->
-
 <script>
-    // Getting data from database for DOM manipulation
-    //give an attribute data-carpark-id
-    //onclick use JS - look for carpark-id
-    //with carparkMapping
-    //filter
-    // console.log('carpark data here', `<%- carparkMap[0]._id %>`)
-    let carparkMapping = `<%- carparkMap %>` //conversion gets messy when passing object here 
+    //conversion gets messy when passing object here, hence we convert to JSONstring, then parse
+    let carparkMapping = `<%- carparkMap %>` 
     carparkMapping = JSON.parse(carparkMapping)
     console.log(carparkMapping.length)
 
@@ -64,7 +45,7 @@
     // Show Full Carpark List Initially
     carparkMapping.forEach( carpark => {
         const carparkA = document.createElement('a')
-        carparkA.setAttribute('class','nav-link')
+        carparkA.setAttribute('class','nav-link carpark-li')
         carparkA.setAttribute('href', `/${carpark.CarParkID}`)
         carparkA.innerText = carpark.Development + '  (CP ' + carpark.CarParkID + ' )'
         const carparkLi = document.createElement('li')
@@ -81,7 +62,17 @@
             return carpark.Development.toLowerCase().includes(search.value.toLowerCase())
         })
         console.log('filteredList', filteredList)
+
         carparkSection.innerHTML = "";
+
+        if (filteredList.length == 0) {
+            const carparkLi = document.createElement('li')
+            carparkLi.innerText = "No Carpark Found"
+            carparkSection.append(carparkLi)
+            console.log('message ran')
+            return
+        }
+
         filteredList.forEach( carpark => {
             const carparkA = document.createElement('a')
             carparkA.setAttribute('class','nav-link')
@@ -92,18 +83,15 @@
             carparkSection.append(carparkLi)
             console.log('filteredList ran')
         })
-
-
     }
 
-    // Setting up Map & Getting Current Location
+    // Setting Up Map - default X,Y coordinates if location is disabled
     let currentX = 1.29375;
     let currentY = 103.85718;
     var map;
 
     const createMap = () => {
         // Create map
-        // map = L.map("map").setView([currentX, currentY], 15);
         map = L.map("map", { doubleClickZoom: false }).locate({
             setView: true,
             // maxZoom: 19,
@@ -115,7 +103,7 @@
             attribution: "© OpenStreetMap",
         }).addTo(map);
 
-        //Obtain Carpark Coordinates(string), convert to array of numbers, then add marker
+        // Obtain Carpark Coordinates(type: string), convert to integer, then add marker
         // const carparkInfo = carparkData.value.map((carpark) => {
         const carparkInfo = carparkMapping.map((carpark) => {
             [x, y] = carpark.Location.split(" ");

@@ -4,15 +4,16 @@ const userModel = require("../models/users");
 
 const controller = {
     showUser: (req, res) => {
+        console.log("showUser");
         res.render("users/profile");
     },
 
     showRegistrationForm: (req, res) => {
+        console.log("showRegistrationForm");
         res.render("pages/register");
     },
 
     register: async (req, res) => {
-        //validators
         const validationResults = userValidators.registerValidator.validate(
             req.body
         );
@@ -26,7 +27,7 @@ const controller = {
         const validatedResults = validationResults.value;
         console.log(validatedResults);
 
-        //ensure that password and confirm_passwword matches
+        // ensure that password and confirm_passwword matches
         if (validatedResults.password !== validatedResults.confirm_password) {
             res.send("passwords do not match");
             return;
@@ -47,11 +48,12 @@ const controller = {
             res.send("failed to create user");
         }
 
-        // res.send("user registered");
+        console.log("user created");
         res.redirect("/users/login");
     },
 
     showLoginForm: (req, res) => {
+        console.log("showLoginForm");
         res.render("pages/login");
     },
 
@@ -70,7 +72,7 @@ const controller = {
             return;
         }
 
-        console.log("user line 78", user);
+        console.log("user is", user);
         if (user == null) {
             res.send("username not found");
             return;
@@ -104,15 +106,10 @@ const controller = {
                     res.send("unable to save session");
                     return;
                 }
-
+                console.log("login successful");
                 res.redirect("/users/profile");
             });
-
-            
-
         });
-
-        // res.send('login is successful')
     },
 
     showProfile: async (req, res) => {
@@ -133,12 +130,7 @@ const controller = {
     },
 
     logout: async (req, res) => {
-        //in header ejs, our logout we created a form with POST action
-        //here we can use GET, but POST/DELETE better
-        //because we are modifying data here
-
-        //recommended way to logout as per express-sessions doucmentation
-        //invalidate the current session
+        // logout the user variable
         req.session.user = null;
 
         //save the changes
@@ -155,6 +147,7 @@ const controller = {
                     res.redirect("/login");
                     return;
                 }
+                console.log("logout successful");
                 res.redirect("/");
             });
         });

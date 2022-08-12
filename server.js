@@ -24,10 +24,9 @@ const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PAS
 
 //Apply middlewares
 const productController = require('./controllers/product_controller')
-const userController = require('./controllers/users_controllers')
+const userController = require('./controllers/users_controller')
 const dataController = require('./controllers/data_controller')
 const autMiddleware = require('./middlewares/auth_middleware');
-const { isAuthenticated } = require("./middlewares/auth_middleware");
 
 //Using Middlewares, set view engine
 app.set("view engine", "ejs");
@@ -37,18 +36,17 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: false, maxAge: 20000 } //20 seconds
+    cookie: { secure: false, httpOnly: false } //20 seconds maxAge: 20000
 }))
 app.use(autMiddleware.setAuthUserVar)
 
 // Product Routes - list, show, create, edit, delete
-app.get("/", productController.listCarparks) // ok for now
-app.post("/", productController.listCarparks) // ok for now
-app.get('/:carpark_id/new', productController.showCreateCarparkForm) // ok for now
-app.post('/:carpark_id', productController.updatePricing) // ok for now
-app.get('/:carpark_id', productController.getCarpark) // ok for now
-app.get('/:carpark_id/edit', productController.showEditCarparkForm) //ok for now
-app.get('/:carpark_id/delete', autMiddleware.isAuthenticated, productController.deleteCarpark) // ok for now
+app.get("/", productController.listCarparks)
+app.get('/:carpark_id', productController.showCarpark)
+app.post('/:carpark_id', autMiddleware.isAuthenticated, productController.updatePricing)
+app.get('/:carpark_id/new', productController.showCreateCarparkForm)
+app.get('/:carpark_id/edit', productController.showEditCarparkForm)
+app.get('/:carpark_id/delete', autMiddleware.isAuthenticated, productController.deleteCarparkPricing)
 
 // Users Routes - show, login, logout, create
 app.get('/users/register', userController.showRegistrationForm)
@@ -60,13 +58,6 @@ app.get('/users/:user_id', userController.showProfile)
 
 // Seed Route - Visit ONCE to populate database
 app.get('/seed/carparkdata', dataController.alternateSeedData)
-
-//These routes with authentication, can create a router - Refer to Kiong's
-// app.get('/users/dashboard', autMiddleware.isAuthenticated, userController.showDashboard)
-// app.get('/users/profile', autMiddleware.isAuthenticated, userController.showProfile)
-
-//Rating Routes
-// app.post('/products/:product_id/ratings', productRatingController.createRatings)
 
 app.listen(port, async () => {
     try {

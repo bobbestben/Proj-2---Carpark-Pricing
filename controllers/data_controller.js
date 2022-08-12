@@ -2,7 +2,7 @@
 const Carpark = require("../models/carparks");
 
 let data = require("../database/seed/carpark_data");
-data = data.value
+data = data.value;
 
 const controller = {
     seedData: (req, res) => {

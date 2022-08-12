@@ -1,31 +1,52 @@
 <%- include('../partials/header'); %>
 
-<div id="page-home">
+<div class="mb-3" id="page-home">
+
     <div id="homepage-cover">
+
         <div class="container">
-            <h1>My Carpark Info<br />is here</h1>
             <% if (carpark) { %>
-            <h3>
+            <h3 class="show-header mt-3">
                 <%= carpark.Development + ' (CP ' + carpark.CarParkID + ' )' %>
             </h3>
-            <p><%= 'Available Lots: ' + carpark.AvailableLots %></p>
+            <h5 class="mt-3">
+                <%= 'Available Lots: ' + carpark.AvailableLots %>
+            </h5>
             <% } %>
-            <h5>Pricing:</h5>
+
+            <h5 class="mt-3">Pricing:</h5>
+
             <% if (pricing) { %>
             <p><%= pricing.pricing %></p>
-            <a href="/<%= carpark.CarParkID %>/edit" class="btn btn-primary">Edit Price Info</a>
+            <p>Contributed by: <%= pricing.name %></p>
+            <a
+                href="/<%= carpark.CarParkID %>/edit"
+                class="btn btn-primary me-2"
+                >Edit Price Info</a
+            >
             <% } else { %>
             <p>
                 No pricing Available. Click the button below if you'd like to
                 contribute!
             </p>
-            <a href="/<%= carpark.CarParkID %>/new" class="btn btn-primary">Add Price Info</a>
+            <a href="/<%= carpark.CarParkID %>/new" class="btn btn-primary me-2"
+                >Add Price Info</a
+            >
             <% } %>
-            <button type="button" class="btn btn-secondary">Upvote</button>
-            <button type="button" class="btn btn-secondary">Downvote</button>
-            <a href="/<%= carpark.CarParkID %>/delete" class="btn btn-danger">Delete</a>
+
+            <button type="button" class="btn btn-secondary me-2">Upvote</button>
+            <button type="button" class="btn btn-secondary me-2">
+                Downvote
+            </button>
+            <a
+                href="/<%= carpark.CarParkID %>/delete"
+                class="btn btn-danger me-2"
+                >Delete</a
+            >
         </div>
+
     </div>
+    
 </div>
 
 <%- include('../partials/footer'); %>

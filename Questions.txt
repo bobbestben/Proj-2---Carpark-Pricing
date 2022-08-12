@@ -4,6 +4,19 @@ from controller -> findOne in DB -> pass as props/object to ejs file -> script f
 -> can read, but error when it prints the data "&" text got problem
 
 
+//JS dom - 
+//Express JS - controllers
+
+ // Getting data from database for DOM manipulation
+    //give an attribute data-carpark-id
+    //onclick use JS - look for carpark-id
+    //with carparkMapping
+    //filter
+    // console.log('carpark data here', `<%- carparkMap[0]._id %>`)
+    let carparkMapping = `<%- carparkMap %>` //conversion gets messy when passing object here 
+    carparkMapping = JSON.parse(carparkMapping)
+    console.log(carparkMapping.length)
+
 
 
 onclick function to buttons?

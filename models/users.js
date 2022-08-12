@@ -22,4 +22,5 @@ const userSchema = new mongoose.Schema({
 //Created this Product model with the above schema
 const User = mongoose.model('User', userSchema)
 
+// Module Exports - access Carparks in controllers/users_controller.js
 module.exports = User

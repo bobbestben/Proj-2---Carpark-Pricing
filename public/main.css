@@ -1,9 +1,12 @@
+/* Header CSS */
 body {
     font-family: "Helvetica Neue", sans-serif;
+    max-width: 600px;
+    margin: auto;
 }
 
 #page-header {
-    padding: 30px 0;
+    padding: 10px 0;
 }
 
 #page-header figure {
@@ -12,73 +15,79 @@ body {
 
 #page-header figcaption {
     display: inline;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 #page-header figcaption a {
-    color: #0C2D48;
+    color: #055099;
     font-size: 20px;
     font-weight: bold;
 }
 
 #page-header .nav-item a {
-    font-weight: 300;
-    font-size: 18px;
-    color: #145DA0;
-    padding: 0 20px;
-    /* border-right: 1px solid #707070; */
+    font-size: 17px;
+    color: gray;
+    padding: 0 5px;
 }
 
-#page-header .nav-item:last-of-type a {
-    border: none;
-    padding-right: 0;
+#logout-button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: gray;
+	border: none;
+	padding-left: 5px;
+	font: inherit;
+    font-size: 17px;
+	cursor: pointer;
+	outline: inherit;
+    height: 25.5px;
 }
 
+/* Home page CSS */
 #map {
-    height: 250px;
+    height: 200px;
+}
+
+.icon {
+    padding-left: 25px;
+    background: url("/img/search-icon.png") no-repeat left;
+    background-origin: content-border;
+    background-size: 15px;
+    border-left: 20px solid transparent;
+}
+
+.btn {
+    text-align: left;
+}
+
+.carpark-list-header-near {
+    background-color: #040072;
+    font-weight: bold;
+    padding: 10px 10px 10px 20px;
+    color: white;
+}
+
+.carpark-list-header-all {
+    background-color: #4c4e52;
+    font-weight: bold;
+    padding: 10px 10px 10px 20px;
+    color: white;
 }
 
 #carpark-list {
     list-style-type: none;
     padding-left: 0;
+    height: calc(100vh - 500px);
 }
 
-/* main {
-    height: 500px;
-} */
+#carpark-list > * {
+    border-bottom: 1px solid #848484;
+    padding: 5px 5px 5px 20px;
+    color: #555555;
+}
 
-/* #homepage-cover {
-    height: 100%;
-    background: url(./img/homepage-cover.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-top: 80px;
-} */
-
-/* #homepage-cover h1 {
-    color: white;
-    font-size: 32px;
-    font-weight: 100;
-    margin-bottom: 30px;
-} */
-
-/* #homepage-cover button {
-    background: #EAEAEA;
-    font-size: 16px;
-    font-weight: 100;
-    padding: 10px 20px;
-} */
-
-/* #page-home {
-    height: calc(100vh - 300px);
-} */
-
-/* .constrained-full-height {
-    min-height: calc(100vh - 300px);
-} */
-
+/* Footer CSS */
 #page-footer {
-    background: #F2F2F2;
+    background: #f2f2f2;
 }
 
 #page-footer p {
@@ -88,46 +97,3 @@ body {
     font-size: 12px;
     font-weight: 100;
 }
-
-
-
-/* #page-contact .bg-section {
-    background: url(./img/contact-cover.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#page-contact .content-section h1 {
-    font-size: 36px;
-    font-weight: 100;
-}
-
-#page-contact form label {
-    font-size: 18px;
-    font-weight: 100;
-}
-
-.form-control {
-    background: #F9F9F9;
-    border: none;
-    padding: 10px 5px;
-}
-
-#page-contact form button {
-    background: #EAEAEA;
-    color: black;
-    border: none;
-    font-size: 16px;
-    font-weight: 100;
-    padding: 15px 30px;
-}
-
-.hr {
-    border-bottom: 1px solid #EAEAEA;
-    width: 80px;
-    margin: 0 auto;
-} */
-
-/* #contact-form .error-msgs {
-    display: none;
-} */

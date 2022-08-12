@@ -13,12 +13,14 @@ const pricingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    name: {
+        type: String,
+        required: true,
+    },
 
 })
 
-//Created this Product model with the above schema
-//in MongoDB, collection is created with the variable name in plural
-//eg. ProductRating = productratings
+// Module Exports - access Carparks in controllers/product_controller.js
 const CarparkPricing = mongoose.model('carpark_pricing', pricingSchema)
 
 module.exports = CarparkPricing
