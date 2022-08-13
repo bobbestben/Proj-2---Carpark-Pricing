@@ -1,9 +1,7 @@
 <%- include('../partials/header'); %>
 
 <div class="mb-3" id="page-home">
-
     <div id="homepage-cover">
-
         <div class="container">
             <% if (carpark) { %>
             <h3 class="show-header mt-3">
@@ -35,15 +33,14 @@
             <% } %>
 
             <button type="button" class="btn btn-secondary me-2">Upvote</button>
-            <button type="button" class="btn btn-secondary me-2">
-                Downvote
-            </button>
-           11
+            <button type="button" class="btn btn-secondary me-2">Downvote</button>
+            <a
+                href="/<%= carpark.CarParkID %>/delete"
+                class="btn btn-danger me-2"
+                >Delete</a
             >
         </div>
-
     </div>
-    
 </div>
 
 <%- include('../partials/footer'); %>
